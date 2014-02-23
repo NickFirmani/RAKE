@@ -9,7 +9,7 @@ import operator
 import math
 
 debug = False
-test = True
+test = False
 
 def isnum (s):
     try:
@@ -130,3 +130,13 @@ if test:
 	totalKeywords = len(sortedKeywords)
 	if debug: print totalKeywords
 	print sortedKeywords[0:(totalKeywords/3)]
+    
+def runRake(text):
+    sentenceList = splitSentences(text)
+    stoppath = "SmartStoplist.txt" 
+    stopwordpattern = buildStopwordRegExPattern(stoppath)
+    phraseList = generateCandidateKeywords(sentenceList, stopwordpattern)
+    wordscores = calculateWordScores(phraseList)
+    keywordcandidates = generateCandidateKeywordScores(phraseList, wordscores)
+    sortedKeywords = sorted(keywordcandidates.iteritems(), key=operator.itemgetter(1), reverse=True)
+    return sortedKeywords
